@@ -1,18 +1,21 @@
 class Playground {
     public static CreateScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement): BABYLON.Scene {
-        var scene = new BABYLON.Scene(engine);
-        scene.clearColor = new BABYLON.Color4(0.8, 0.8, 0.8);
+        var scene = new BABYLON.Scene(engine)
+        scene.clearColor = new BABYLON.Color4(0.8, 0.8, 0.8)
 
-                /**** Set camera and light *****/
-        const camera = new BABYLON.ArcRotateCamera("camera", 50, 50, 50, new BABYLON.Vector3(25, 25, 0), scene);
-        camera.attachControl(canvas, true);
-        const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 0), scene);
+        /**** Set camera and light *****/
+        const camera = new BABYLON.ArcRotateCamera("camera", 0, 0, 0, new BABYLON.Vector3(25, 0, 25), scene)
+        camera.setPosition(new BABYLON.Vector3(0, 33, 0))
+        camera.target = new BABYLON.Vector3(25, 0, 25)
+        camera.radius = 100
+        camera.attachControl(canvas, true)
+        const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 0), scene)
 
         const mountainRange = new BABYLON.Mesh("mountain-range", scene)
-        var mountainMaterial = new BABYLON.StandardMaterial("mountainMaterial", scene);
-        mountainMaterial.diffuseColor = new BABYLON.Color3(0.5, 0.5, 0.5);
-        mountainRange.material = mountainMaterial;
-        
+        var mountainMaterial = new BABYLON.StandardMaterial("mountainMaterial", scene)
+        mountainMaterial.diffuseColor = new BABYLON.Color3(0.5, 0.5, 0.5)
+        mountainRange.material = mountainMaterial
+
         const generateNoise = () => {
             return Math.round(Math.random() * 20)
         }
@@ -22,10 +25,12 @@ class Playground {
             const block = BABYLON.MeshBuilder.CreateBox(`block-${blockNum}`, {})
             block.scaling = new BABYLON.Vector3(1, y, 1)
             block.position = new BABYLON.Vector3(x, Math.floor(y) - y / 2, z)
-            
+
             const blockMat = new BABYLON.StandardMaterial(`block-${blockNum}-mat`)
             blockMat.diffuseColor = color
+            blockMat.wireframe
             block.material = blockMat
+            block.material.wireframe
             blockNum++
         }
 
@@ -57,7 +62,7 @@ class Playground {
                 generateBlock(x, height, y, color)
             }
         }
-        
+
 
         return scene;
     }
